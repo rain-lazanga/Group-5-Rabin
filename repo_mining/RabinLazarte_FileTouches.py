@@ -1,6 +1,5 @@
 import json
 import requests
-import csv
 
 import os
 
@@ -34,8 +33,6 @@ def countfiles(dictfiles, lsttokens, repo):
         ".cpp",
         ".java",
         ".kts",
-        ".bat",
-        ".iml",
         ".h"
 
     }
@@ -57,6 +54,10 @@ def countfiles(dictfiles, lsttokens, repo):
                 shaUrl = 'https://api.github.com/repos/' + repo + '/commits/' + sha
                 shaDetails, ct = github_auth(shaUrl, lsttokens, ct)
                 filesjson = shaDetails['files']
+
+                author_info = shaDetails['commit'].get('author') or {}
+                authorName = author_info.get('name')
+                authorDate = author_info.get('date')
                 for filenameObj in filesjson:
                     filename = filenameObj['filename']
 
@@ -65,7 +66,13 @@ def countfiles(dictfiles, lsttokens, repo):
                     if extension not in SourceExtensions:
                         continue
 
-                    dictfiles[filename] = dictfiles.get(filename, 0) + 1
+                    if filename not in dictfiles: 
+                        dictfiles[filename] = []
+                    
+                    dictfiles[filename].append({
+                        "author": authorName,
+                        "date": authorDate,
+                    })
                     print(filename)
             ipage += 1
     except:
@@ -87,22 +94,3 @@ lstTokens = [""] # put token here
 dictfiles = dict()
 countfiles(dictfiles, lstTokens, repo)
 print('Total number of files: ' + str(len(dictfiles)))
-
-file = repo.split('/')[1]
-# change this to the path of your file
-fileOutput = 'data/file_' + file + '.csv'
-rows = ["Filename", "Touches"]
-fileCSV = open(fileOutput, 'w')
-writer = csv.writer(fileCSV)
-writer.writerow(rows)
-
-bigcount = None
-bigfilename = None
-for filename, count in dictfiles.items():
-    rows = [filename, count]
-    writer.writerow(rows)
-    if bigcount is None or count > bigcount:
-        bigcount = count
-        bigfilename = filename
-fileCSV.close()
-print('The file ' + bigfilename + ' has been touched ' + str(bigcount) + ' times.')
