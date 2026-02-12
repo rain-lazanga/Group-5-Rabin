@@ -128,6 +128,15 @@ Each test should include:
 # - Ensure passwords are properly hashed.
 # - Verify that password verification works correctly.
 # Target Methods: set_password() / check_password()
+# ===========================
+# Test: Password hashing test
+# Author: Rabin Lazarte
+# Date: 2026-02-11
+# Description: Ensure passwords are being hashed and verify that the password verificaitions functions
+# ===========================
+
+#def test_password_hashing():
+    
 
 # Student 9: Test account deactivation/reactivation
 # - Ensure accounts can be deactivated and reactivated correctly.
