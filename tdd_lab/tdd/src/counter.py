@@ -20,3 +20,7 @@ def counter_exists(name):
   """Check if counter exists"""
   return name in COUNTERS
 
+@app.route('/coounters/<name>', methods=['GET'])
+def list_all_counters():
+    #lists all the counters
+    return jsonify(COUNTERS), status.HTTP_200_OK
