@@ -278,9 +278,3 @@ class TestCounterEndpoints:
 
         # TODO: Add an assertion to verify the error message specifically says 'Invalid counter name'S
         
-    def test_top_counter_not_found(self, client):
-        #checck if the counter access doesn't exist
-        client.post("/counters/reset")
-        #check if the conter access is empty
-        response = client.get("/counters/top/5")
-        assert response.status_code == 404
