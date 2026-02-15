@@ -1,0 +1,5 @@
+# Ignore venv virtual machine - Brian
+lab_2_vm/
+.vscode
+.pytest_cache
+.venv
