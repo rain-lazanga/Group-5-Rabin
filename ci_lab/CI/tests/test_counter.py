@@ -279,11 +279,6 @@ class TestCounterEndpoints:
     def test_top_counter_not_found(self, client):
         #checck if the counter access doesn't exist
         client.post("/counters/reset")
-        client.post('/counters/a')
-        client.post('/counters/b')
-        client.put('/counters/a')
-        client.put('/counters/b')
-        client.put('/counters/b')
         
         #check if the conter access is empty
         response = client.get("/counters/top/5")
