@@ -284,5 +284,3 @@ class TestCounterEndpoints:
         response = client.get("/counters/top/5")
         
         assert response.status_code == 404
-
-        #test line for pr test
