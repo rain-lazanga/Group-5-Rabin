@@ -1,5 +1,9 @@
 name: CI Workflow  # Name of the workflow
 
+permissions:
+  issues: write
+  pull-requests: write
+
 on:
   push:
   pull_request:
