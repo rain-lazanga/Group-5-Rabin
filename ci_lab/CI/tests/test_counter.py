@@ -275,3 +275,12 @@ class TestCounterEndpoints:
         response = client.post('/counters/test@123')
 
         assert response.status_code == HTTPStatus.BAD_REQUEST
+
+    def test_top_counter_not_found(self, client):
+        #checck if the counter access doesn't exist
+        client.post("/counters/reset")
+        
+        #check if the conter access is empty
+        response = client.get("/counters/top/5")
+        
+        assert response.status_code == 404
