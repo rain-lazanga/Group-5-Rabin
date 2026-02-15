@@ -41,5 +41,5 @@ jobs:
               github.rest.issues.createComment({ issue_number: context.payload.pull_request.number,
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                body: `CI Status: ${process.env.GITHUB_JOB}`
+                body: `CI Status: ${status.toUpperCase()}`
               })
