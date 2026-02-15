@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest  # Use the latest Ubuntu runner
     defaults:
       run:
-        working-directory: ci_lab  # Set the default working directory for all steps
+        working-directory: ci_lab/CI  # Set the default working directory for all steps
 
     steps:
       - name: Checkout Repository
@@ -35,10 +35,10 @@ jobs:
 
       - name: Comment CI result
         uses: actions/github-script@v7
-        if: always()
+        if: github.event_name == 'pull_request'
         with:
           script: |
-              github.rest.issues.createComment({ issue_number: context.issue.number,
+              github.rest.issues.createComment({ issue_number: context.payload.pull_request.number,
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 body: `CI Status: ${process.env.GITHUB_JOB}`
