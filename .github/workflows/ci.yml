@@ -1,5 +1,9 @@
 name: CI Workflow  # Name of the workflow
 
+permissions:
+  issues: write
+  pull-requests: write
+
 on:
   push:
   pull_request:
@@ -33,13 +37,26 @@ jobs:
       - name: Run Flake8 Linting
         run: flake8 src --count --select=E9,F63,F7,F82 --show-source --statistics
 
-      - name: Comment CI result
-        uses: actions/github-script@v7
-        if: github.event_name == 'pull_request'
-        with:
-          script: |
-              github.rest.issues.createComment({ issue_number: context.payload.pull_request.number,
+      - - name: Comment build Passed
+          if: success()
+          uses: actions/github-script@v7
+          with:
+            script: |
+              github.rest.issues.createComment({
+                issue_number: context.payload.pull_request.number,
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                body: `CI Status: ${process.env.GITHUB_JOB}`
+                body: "Pass"
               })
+
+      - name: Comment build Failed
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.payload.pull_request.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: "Fail"
+            })
